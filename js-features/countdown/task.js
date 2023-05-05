@@ -3,7 +3,7 @@ let inter = setInterval(() => {
         if (time.textContent == '00:00:00') {
         alert('Вы победили в конкурсе!');
         clearInterval(inter);
-    } else {
+    }   else {
         let hour = time.textContent[0] + time.textContent[1];
         let min = time.textContent[3] + time.textContent[4];
         let sec = time.textContent[6] + time.textContent[7];
