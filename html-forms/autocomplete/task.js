@@ -68,31 +68,39 @@ class Autocomplete {
   }
 
   getMatches( text ) {
-    const options = Array.from(this.input.options);
+    /*
+      TODO: этот метод нужно дописать
+      text - фраза, которую вводят в поле поиска
+      Метод должен вернуть массив.
 
-    const result = [];
+      Он формируется на основе списка опций select-элемента (this.input)
+      Подходящие опции - те, чей текст содержит то, что есть в аргументе text
+      Необходимо вернуть массив объектов со свойствами:
+      {
+        text: 'Содержимое <option>',
+        value: 'Содержимое атрибута value'
+      }
+    */
+    console.log(this.input.options);
 
-    options.forEach((optionText) => {
-      if (
-        optionText.textContent.toUpperCase().includes(text.toUpperCase()) &&
-        text !== ''
-      ) {
-        result.push({
-          text: optionText.textContent,
-          value: optionText.value,
+    let arr = [];
+    for (let i = 0; i < this.input.options.length; i++) {
+      if (this.input.options[i].text.includes(text)) {
+        arr.push({
+          text: this.input.options[i].text,
+          value: this.input.value
         });
       }
-    });
-    return result;
-  }
-  
-    return [
-      {
-        text: 'Чубакка',
-        value: '1'
-      }
-    ];
+    }
+    return arr;
+
+    // return [
+    //   {
+    //     text: 'Чубакка',
+    //     value: '1'
+    //   }
+    // ];
   }
 }
-
+  
 new Autocomplete( document.querySelector( '.autocomplete' ));
