@@ -1,35 +1,25 @@
-const sliderDot = document.getElementsByClassName('slider__dot');
+const slides = Array.from(document.querySelectorAll(".slider__item"));
 
-function slider(slide) {
-    const sliderItem = document.getElementsByClassName('slider__item');
-    const activeItemIndex = Array.from(sliderItem).findIndex(item => item.classList.contains('slider__item_active'));
-    const activeDotIndex = Array.from(sliderDot).findIndex(dot => dot.classList.contains('slider__dot_active'));
+const btnLeft = document.querySelector(".slider__arrow_prev");
 
-    sliderItem[activeItemIndex].classList.remove('slider__item_active');
-    sliderDot[activeDotIndex].classList.remove('slider__dot_active');
+const btnRight = document.querySelector(".slider__arrow_next");
 
-    sliderItem[slide].classList.add('slider__item_active');
-    sliderDot[slide].classList.add('slider__dot_active');
-}
+btnLeft.onclick = () => {
+  let active = slides.findIndex((value) =>
+    value.classList.contains("slider__item_active")
+  );
+  slides[active].classList.remove("slider__item_active");
+  active !== slides.length - 1 ? active++ : (active = 0);
 
-for (let i = 0; i < sliderDot.length; i++) {
-    sliderDot[i].onclick = () => {
-        slider(i);
-    };
-}
-
-document.getElementsByClassName('slider__arrow_next').item(0).onclick = () => {
-    const sliderItem = document.getElementsByClassName('slider__item');
-    const activeItemIndex = Array.from(sliderItem).findIndex(item => item.classList.contains('slider__item_active'));
-    const nextIndex = (activeItemIndex + 1) % sliderItem.length;
-
-    slider(nextIndex);
+  slides[active].classList.add("slider__item_active");
 };
 
-document.getElementsByClassName('slider__arrow_prev').item(0).onclick = () => {
-    const sliderItem = document.getElementsByClassName('slider__item');
-    const activeItemIndex = Array.from(sliderItem).findIndex(item => item.classList.contains('slider__item_active'));
-    const prevIndex = (activeItemIndex - 1 + sliderItem.length) % sliderItem.length;
+btnRight.onclick = () => {
+  let active = slides.findIndex((value) =>
+    value.classList.contains("slider__item_active")
+  );
+  slides[active].classList.remove("slider__item_active");
+  active <= 0 ? (active = slides.length - 1) : active--;
 
-    slider(prevIndex);
+  slides[active].classList.add("slider__item_active");
 };
