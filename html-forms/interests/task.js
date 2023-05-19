@@ -11,3 +11,4 @@ interestCheck.forEach((check) => check.addEventListener('change', (event) => {
         children.forEach(child => child.checked = true)
     }
 }));
+
