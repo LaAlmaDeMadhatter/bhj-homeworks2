@@ -16,3 +16,4 @@ show_success.onclick = () => {
     modal_main.classList.remove('modal_active');
     modal_success.classList.add('modal_active');
 };
+
