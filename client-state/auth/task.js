@@ -1,48 +1,45 @@
-function welcomer(id) {
-    const welcome = document.getElementById('welcome');
-    welcome.classList.add('welcome_active');
-    const user_id = document.getElementById('user_id');
-    user_id.insertAdjacentHTML('afterbegin', `${id}`);
+const form = document.getElementById('signin__form');
+const inputFields = Array.from(document.querySelectorAll('.control'));
+const userId = document.getElementById('user_id');
+const signin = document.querySelector('.signin');
+const welcome = document.querySelector('.welcome');
+const button = document.querySelector('.btn');
 
-    user_id.insertAdjacentHTML('beforeend', '<br><button id="button">Деавторизация</button>');
+let savedId;
 
-    const button = document.getElementById('button');
-    button.addEventListener('click', () => {
-        welcome.classList.remove('welcome_active');
-        document.getElementById('signin').classList.add('signin_active');
+form.addEventListener('submit', (event) => {
+  const xhr = new XMLHttpRequest();
+  
+  xhr.addEventListener('readystatechange', () => {
+    if (xhr.readyState === xhr.DONE) {
+      let responseText = JSON.parse(xhr.responseText);
 
-        button.remove();
-        user_id.innerHTML = '';
-    });
-}
+      if (responseText.success === true) {
+        inputFields.value = '';
+        localStorage.setItem('id', JSON.stringify(responseText.user_id));
+        savedId = localStorage.getItem('id');
+        userId.textContent = savedId;
+        signin.classList.remove('signin_active');
+        welcome.classList.add('welcome_active');                
+      } else {
+        alert('Неверный логин/пароль');               
+      };
+    };
+  });
 
-if (localStorage.length && localStorage.id) {
-    welcomer(localStorage.id);
-}
-else {
-    const signin = document.getElementById('signin');
-    signin.classList.add('signin_active');
-}
+  xhr.open('POST', 'https://students.netoservices.ru/nestjs-backend/auth');
+  
+  const formData = new FormData(form);
+  xhr.send(formData);
 
-document.addEventListener('submit', (e) => {
-    const signin__form = document.getElementById('signin__form');
-    let formData = new FormData(signin__form);
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/auth.php');
-    xhr.send(formData);
-    xhr.addEventListener('readystatechange', () => {
-        if (xhr.readyState == xhr.DONE) {
-            const parse = JSON.parse(xhr.responseText);
-            if (parse.success) {
-                signin.classList.remove('signin_active');
+  event.preventDefault();
+});
 
-                welcomer(parse.user_id);        
-                localStorage.id = parse.user_id;
-            }
-            else {
-                alert('Неверный логин/пароль');
-            }
-        }
-    });
-    e.preventDefault();
-})
+window.addEventListener('load', () => {
+  savedId = localStorage.getItem('id');
+  if (savedId) {
+    userId.textContent = savedId;
+    signin.classList.remove('signin_active');
+    welcome.classList.add('welcome_active'); 
+  }
+});
