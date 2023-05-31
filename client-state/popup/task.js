@@ -1,12 +1,22 @@
-if (!document.cookie.includes('yes')) {
-    const modal_main = document.getElementsByClassName('modal')[0];
-    modal_main.classList.add('modal_active');
 
-    const modal__close = document.getElementsByClassName('modal__close')[0];
-    modal__close.addEventListener('click', () => {
-        modal_main.classList.remove('modal_active');
+const modalClose = Array.from(document.getElementsByClassName("modal__close"));
+const subscribeModel = document.getElementById("subscribe-modal");
 
-        document.cookie = 'close=yes';
-        console.log(document.cookie);
-    });
+if (!getCookie("subscribeModalForm")) {
+    subscribeModel.classList.add("modal_active");
 }
+
+function close(){
+    this.closest(".modal_active").classList.remove("modal_active");
+    document.cookie = "subscribeModalForm=true";
+}
+
+function getCookie(name) {
+    const cookies = "; "+ document.cookie;
+    let cookie = cookies.split("; "+ name+ "=");
+    if (cookie.length === 2) {
+        return cookie.pop().split(";").shift();
+    }
+}
+
+modalClose.forEach(element => element.onclick = close);
